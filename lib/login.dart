@@ -164,7 +164,24 @@ class _LoginState extends State<Login> {
                 ),
               ],
             ),
-          )
+          ),
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 15.0),
+            child: Container(
+              height: 40,
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: Color.fromRGBO(49, 39, 79, 1),
+              ),
+              child: Center(
+                child: GestureDetector(
+                  child: Text("Continue With Google",style: TextStyle(color: Colors.white,fontSize: 17),),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
