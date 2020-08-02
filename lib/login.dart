@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:health_assistant/services/authservice.dart';
 import './Animation/FadeAnimation.dart';
-import 'register.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -151,8 +150,9 @@ class _LoginState extends State<Login> {
                               gravity: ToastGravity.BOTTOM,
                               backgroundColor: Colors.amber,
                               textColor: Colors.white,
-                              fontSize: 10.0
+                              fontSize: 10.0,
                           );
+                          Navigator.pushNamed(context, '/home');
                         }
                       });
                     },

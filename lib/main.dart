@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:health_assistant/home.dart';
 import 'register.dart';
 import 'login.dart';
 import 'forgotpassword.dart';
+import 'home.dart';
 
 
 void main() => runApp(
@@ -11,6 +13,7 @@ void main() => runApp(
       '/login':(context) => Login(),
       '/register':(context) => register(),
       '/forgotpassword':(context) => forgotpassword(),
+      '/home':(context) => home(),
     },
   ),
 );
