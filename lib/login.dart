@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:health_assistant/services/authservice.dart';
 import './Animation/FadeAnimation.dart';
 import 'register.dart';
 
@@ -8,6 +10,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  var email, password, token;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +87,9 @@ class _LoginState extends State<Login> {
                               hintText: "Email-ID",
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
+                            onChanged: (val){
+                              email = val;
+                            },
                           ),
                         ),
                         Container(
@@ -97,7 +105,11 @@ class _LoginState extends State<Login> {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Password",
-                                hintStyle: TextStyle(color: Colors.grey)),
+                                hintStyle: TextStyle(color: Colors.grey)
+                            ),
+                            onChanged: (val){
+                              password = val;
+                            },
                           ),
                         )
                       ],
@@ -128,17 +140,34 @@ class _LoginState extends State<Login> {
                 ),
                 FadeAnimation(
                   1,
-                  Container(
-                    height: 50,
-                    margin: EdgeInsets.symmetric(horizontal: 60),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Color.fromRGBO(49, 39, 79, 1),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white),
+                  GestureDetector(
+                    onTap: (){
+                      AuthService().login(email, password).then((val){
+                        if(val.data['success']){
+                          token = val.data['token'];
+                          Fluttertoast.showToast(
+                              msg: 'user exist',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.amber,
+                              textColor: Colors.white,
+                              fontSize: 10.0
+                          );
+                        }
+                      });
+                    },
+                    child: Container(
+                      height: 50,
+                      margin: EdgeInsets.symmetric(horizontal: 60),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Color.fromRGBO(49, 39, 79, 1),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
