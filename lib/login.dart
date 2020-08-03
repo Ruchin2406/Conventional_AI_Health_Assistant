@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import './Animation/FadeAnimation.dart';
-import 'register.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:health_assistant/services/authservice.dart';
+import 'package:health_assistant/widgets/button_widget.dart';
+import 'package:health_assistant/widgets/textfield_widget.dart';
+import 'package:health_assistant/widgets/wave_widget.dart';
+
 
 class Login extends StatefulWidget {
   @override
@@ -8,178 +12,121 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  var email, password, token;
+
   @override
   Widget build(BuildContext context) {
+
+    final size = MediaQuery.of(context).size;
+    final bool keyboardopen = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[100],
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: Colors.white,
+      body: Stack(
         children: <Widget>[
           Container(
-            height: 200,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                    child: FadeAnimation(
-                      1,
-                      Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage("assets/1.png"),
-                          ),
-                        ),
-                      ),
-                    ))
-              ],
+            height: size.height-200,
+            color: Colors.blue,
+          ),
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeOutQuad,
+            top: keyboardopen? -size.height/3.7 : 0.0,
+            child: WaveWidget(
+              size:size,
+              yOffset:size.height/3.0,
+              color:Colors.white,
             ),
           ),
-          SizedBox(
-            height: 20,
+          Padding(
+            padding: const EdgeInsets.only(top: 100.0,left: 20.0),
+            child: Text(
+              'Hello There,\nWelcome Back!',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 25.0,
+              ),
+            ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.all(30.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FadeAnimation(
-                  1,
-                  Text(
-                    "Hello there, \nwelcome back",
+
+                TextFieldWidget(
+                  hintText:'Email',
+                  obscureText:false,
+                  prefixIconData:Icons.mail_outline,
+                  onChanged: (val){
+                    email = val;
+                  },
+                ),
+                SizedBox(height: 10,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    TextFieldWidget(
+                      hintText:'Password',
+                      obscureText:true,
+                      prefixIconData:Icons.lock_outline,
+                      onChanged: (val){
+                        password = val;
+                      },
+                    ),
+                    SizedBox(height: 10,),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pushNamed(context, '/forgotpassword');
+                      },
+                      child: Text(
+                        'Forgot password?',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                GestureDetector(
+                  onTap: (){
+                    AuthService().login(email, password).then((val){
+                      if(val.data['success']){
+                        token = val.data['token'];
+                        Fluttertoast.showToast(
+                          msg: 'user exist',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 10.0,
+                        );
+                        Navigator.pushNamed(context, '/home');
+                      }
+                    });
+                  },
+                  child: ButtonWidget(
+                    title:'Login',
+                    hasBorder:false,
+                  ),
+                ),
+                SizedBox(height: 10,),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, '/register');
+                  },
+                  child: Text(
+                    'Create Account',
                     style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.grey[850],
+                      color: Colors.blue,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                ),
-                FadeAnimation(
-                  1,
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.transparent,
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Email-ID",
-                              hintStyle: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          child: TextField(
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Password",
-                                hintStyle: TextStyle(color: Colors.grey)),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, '/forgotpassword');
-                  },
-                  child: Center(
-                    child: FadeAnimation(
-                      1,
-                      Text(
-                        "Forgot Password?",
-                        style: TextStyle(
-                          color: Colors.pink[200],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                FadeAnimation(
-                  1,
-                  Container(
-                    height: 50,
-                    margin: EdgeInsets.symmetric(horizontal: 60),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Color.fromRGBO(49, 39, 79, 1),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                FadeAnimation(
-                  1,
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.pushNamed(context, '/register');
-                    },
-                    child: Center(
-                      child: Text(
-                        "Create Account",
-                        style: TextStyle(
-                          color: Colors.pink[200],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                SizedBox(height: 70,)
               ],
-            ),
-          ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Container(
-              height: 40,
-              margin: EdgeInsets.symmetric(horizontal: 40),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Color.fromRGBO(49, 39, 79, 1),
-              ),
-              child: Center(
-                child: GestureDetector(
-                  child: Text("Continue With Google",style: TextStyle(color: Colors.white,fontSize: 17),),
-                ),
-              ),
             ),
           ),
         ],
