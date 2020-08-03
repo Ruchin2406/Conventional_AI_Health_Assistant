@@ -18,7 +18,7 @@ class AuthService{
         msg: e.response.data['msg'],
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.blue,
         textColor: Colors.white,
         fontSize: 10.0
       );
