@@ -57,10 +57,10 @@ class _registerState extends State<register> {
                 ),
                 SizedBox(height: 10,),
                 TextFieldWidget(
-                      hintText:'Password',
-                      obscureText:true,
-                      prefixIconData:Icons.lock_outline,
-                    ),
+                  hintText:'Password',
+                  obscureText:true,
+                  prefixIconData:Icons.lock_outline,
+                ),
                 SizedBox(height: 10,),
                 TextFieldWidget(
                   hintText:'Conform Password',
